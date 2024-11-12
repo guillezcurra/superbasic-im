@@ -23,6 +23,7 @@
     "@hapi/inert": "^7.1.0",
     "@hapi/vision": "^7.0.3",
     "argon2": "^0.40.3",
+    "char-regex": "^2.0.1",
     "handlebars": "^4.7.8",
     "mime-types": "^2.1.35",
     "node-cache": "^5.1.2",
@@ -41,6 +42,7 @@
     "@types/qrcode": "^1.5.5",
     "@types/vcards-js": "^2.10.5",
     "gts": "^5.3.1",
+    "openmoji": "^15.0.0",
     "typescript": "^5.4.3"
   }
 }

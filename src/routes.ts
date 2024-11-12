@@ -12,7 +12,7 @@ import {ReqRefDefaults, Request, ResponseToolkit} from '@hapi/hapi';
 import fs from 'fs';
 import * as emoji from 'node-emoji';
 import {WAState, GroupChat} from 'whatsapp-web.js';
-import {removeDiacritics} from './helper';
+import {removeDiacritics, emojiToImage} from './helper';
 
 export const vcard_handler = async (
   request: Request<ReqRefDefaults>,
@@ -285,7 +285,8 @@ export const chat_handler = async (
 
     fmtMsg.push({
       from: name,
-      msg: msg.map(m => emoji.unemojify(m)),
+      //msg: msg.map(m => emoji.unemojify(m)),
+      msg: msg.map(m => emojiToImage(m)),
       time: longNumToDate(time),
       fromMe: fromMe,
       media: message.hasMedia,

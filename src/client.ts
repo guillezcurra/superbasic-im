@@ -8,6 +8,7 @@ import fs from 'fs';
 import * as QRCode from 'qrcode';
 import * as mime from 'mime-types';
 import * as emoji from 'node-emoji';
+import * as om from 'openmoji';
 
 // Create a new client instance
 export const client = new WAClient({
@@ -15,6 +16,7 @@ export const client = new WAClient({
 });
 export let pairQr: string | null = null;
 export const unreadChats: Map<string, number> = new Map<string, number>();
+export const emojiHex: Map<string, string> = new Map<string, string>();
 
 // When the client is ready, run this code (only once)
 client.once('ready', async () => {
@@ -28,6 +30,7 @@ client.once('ready', async () => {
       unreadChats.set(chatid, chat.unreadCount);
     }
   }
+  initEmojiHex();
 });
 
 // When the client received QR-Code
@@ -143,4 +146,10 @@ export async function sendWAMessage(to: string, msg: string, file: any) {
     media.mimetype = file.headers['content-type'];
     await client.sendMessage(to, media);
   }
+}
+
+function initEmojiHex() {
+  om.openmojis.forEach(e => {
+    emojiHex.set(e.emoji, e.hexcode);
+  });
 }
