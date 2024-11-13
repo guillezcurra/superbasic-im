@@ -4,18 +4,23 @@ import {emojiHex} from './client';
 export const charRegexMatcher = charRegex();
 
 export function emojiToImage(input: string): string {
+  const exceptions: string[] = ["002D"]; //Array of characters that shouldnt be processed, like '-'
   const characters = input.match(charRegexMatcher);
   if (characters === null) {
     return input;
   }
 
-  //TODO: Substituir el caracter per la imatge corresponent en cas que sigui un emoji
   return characters
-    .map(character =>
-      emojiHex.get(character)
-        ? `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />`
-        : character
-    )
+    .map(character => {
+	const emojiCode = emojiHex.get(character);
+	if (emojiCode && !exceptions.includes(emojiCode)) {
+	  const imgEmoji = `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />`;
+	  return imgEmoji
+	} else{
+	  return character;
+	}
+//	emojiCode && exceptions.includes(emojiCode) ? `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />` : character;
+    })
     .join('');
 }
 
