@@ -8,7 +8,7 @@
 <style>
   .hidden {
     display: none;
-  } 
+  }
 </style>
 </head>
 <body>
@@ -39,7 +39,7 @@
         {{else}}
             <strong>{{this.from}} </strong>   
         {{/if}}
-         ({{this.time}}): {{#each this.msg}} {{this}} <br />{{/each}}
+	 ({{this.time}}): {{#each this.msg}} {{{this}}} <br />{{/each}}
          {{#if this.media}}
             <a href="/media/{{this.id}}">Download Attachment</a><br />
          {{/if}}

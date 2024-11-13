@@ -1,17 +1,22 @@
 import charRegex from './charregex';
-import { emojiHex } from './client';
+import {emojiHex} from './client';
 
 export const charRegexMatcher = charRegex();
 
 export function emojiToImage(input: string): string {
-
   const characters = input.match(charRegexMatcher);
   if (characters === null) {
     return input;
   }
 
   //TODO: Substituir el caracter per la imatge corresponent en cas que sigui un emoji
-  return characters.map(character => emojiHex.get(character) ? `<img src="/images/emoji/${emojiHex.get(character)}.png" />` : character).join('');
+  return characters
+    .map(character =>
+      emojiHex.get(character)
+        ? `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />`
+        : character
+    )
+    .join('');
 }
 
 export function removeDiacritics(str: string): string {
