@@ -1,5 +1,6 @@
 import charRegex from './charregex';
 import {emojiHex} from './client';
+import * as emoji from 'node-emoji';
 
 export const charRegexMatcher = charRegex();
 
@@ -14,12 +15,12 @@ export function emojiToImage(input: string): string {
     .map(character => {
 	const emojiCode = emojiHex.get(character);
 	if (emojiCode && !exceptions.includes(emojiCode)) {
-	  const imgEmoji = `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />`;
-	  return imgEmoji
+	  //const imgEmoji = `<img src="../public/emoji/${emojiHex.get(character)}.svg" height=25 width=25 >`;
+	  const imgEmoji = `<img src="../public/emoji/${emojiHex.get(character)}.svg" height=30 width=30 >`;
+	  return imgEmoji;
 	} else{
-	  return character;
+	  return emoji.unemojify(character);
 	}
-//	emojiCode && exceptions.includes(emojiCode) ? `<img src="../public/emoji/${emojiHex.get(character)}.png" style="height: 1em; width: 1em;" />` : character;
     })
     .join('');
 }

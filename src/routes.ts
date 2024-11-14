@@ -267,7 +267,7 @@ export const chat_handler = async (
       const reactionsList = await message.getReactions();
       for (let j = 0; j < reactionsList.length; j++) {
         const reaction = reactionsList[j];
-        let reactionInfo = emoji.unemojify(reaction.id) + ' by: ';
+        let reactionInfo = emojiToImage(reaction.id) + ' by: ';
         for (let k = 0; k < reactionsList[j].senders.length; k++) {
           const reactionContact = await client.getContactById(
             reactionsList[j].senders[k].senderId
