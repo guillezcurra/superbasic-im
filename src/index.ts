@@ -26,6 +26,8 @@ import {
   chat_info_handler,
 } from './routes';
 
+import {api_test_handler} from './api-routes';
+
 export let server: Server;
 
 export const init = async function (): Promise<Server> {
@@ -71,7 +73,8 @@ export const init = async function (): Promise<Server> {
     if (
       request.path !== '/login' &&
       request.path !== '/' &&
-      !request.path.startsWith('/public')
+      !request.path.startsWith('/public') &&
+      request.path !== '/api/test'
     ) {
       const state = await client.getState();
       if (state !== WAState.CONNECTED && pairQr !== null) {
@@ -134,6 +137,35 @@ export const init = async function (): Promise<Server> {
           }
         }
         return h.redirect('/login');
+      },
+      options: {
+        auth: {
+          mode: 'try',
+        },
+      },
+    },
+    {
+      method: 'POST',
+      path: '/api/login',
+      handler: async (request, h) => {
+        if (typeof request.payload === 'object') {
+          try {
+            const {username, password} = request.payload as {
+              username: string;
+              password: string;
+            };
+            if (
+              username === user.phoneNumber &&
+              (await argon2.verify(user.hash, password))
+            ) {
+              request.cookieAuth.set({id: username});
+              return h.redirect('/');
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        }
+	return h.response({ response: 'OK' }).code(200);
       },
       options: {
         auth: {
@@ -214,6 +246,11 @@ export const init = async function (): Promise<Server> {
       path: '/',
       handler: new_chat_or_pair_handler,
     },
+    {
+      method: 'GET',
+      path: '/api/test',
+      handler: api_test_handler,
+    }
   ]);
 
   return server;
